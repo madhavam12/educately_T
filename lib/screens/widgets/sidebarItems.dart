@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:liquid_ui/liquid_ui.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-
-import 'package:url_launcher/url_launcher.dart';
-
 import 'package:educately_t/services/firebaseAuthService.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 import 'package:educately_t/screens/login/loginScreen.dart';
+
+import '../home/tnCPage.dart';
+import '../home/creditsPage.dart';
+import '../home/privacyPolicyPage.dart';
 
 String email = 'madhavam.shahi.12@gmail.com';
 
@@ -40,7 +41,10 @@ Widget buildMenu(context, _endSideMenuKey) {
         ),
         LListItem(
           backgroundColor: Colors.transparent,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => TNCPage()));
+          },
           leading: Icon(LineAwesomeIcons.paperclip,
               size: 22.50, color: Colors.black),
           title: Text("Terms and Conditions",
@@ -56,7 +60,10 @@ Widget buildMenu(context, _endSideMenuKey) {
         ),
         LListItem(
           backgroundColor: Colors.transparent,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => PrivacyPolicyPage()));
+          },
           leading:
               Icon(LineAwesomeIcons.file, size: 22.50, color: Colors.black),
           title: Text("Privacy Policy",
@@ -72,7 +79,10 @@ Widget buildMenu(context, _endSideMenuKey) {
         ),
         LListItem(
           backgroundColor: Colors.transparent,
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CreditsPage()));
+          },
           leading:
               Icon(LineAwesomeIcons.feather, size: 22.50, color: Colors.black),
           title: Text("Credits",
