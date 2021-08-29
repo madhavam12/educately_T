@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "200096719584-03j7djlocm5o6ism8etvodnl869k4v0e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.educatelyapp.educately.app",
+            "certificate_hash": "01589246c68aded37aca284b163499f2ed6f72fc"
+          }
+        },
+        {
           "client_id": "200096719584-tfmo9ppjeq0gk4bjsj7gku7fq4qrbef9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -50,6 +58,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "200096719584-2mci80j46brd5cds61io3hddsam68lmb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.teachers.educately_t",
+            "certificate_hash": "bc48410ae1b016c6423d30f97a068480b2f5cd72"
+          }
+        },
         {
           "client_id": "200096719584-mgp2k627u9pmmlbvoc029qh2vp1et09b.apps.googleusercontent.com",
           "client_type": 1,
