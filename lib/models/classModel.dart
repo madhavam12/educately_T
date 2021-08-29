@@ -6,6 +6,7 @@ class ClassModel {
   final String teacherName;
 
   final String desc;
+  final String deviceToken;
   final String title;
   final String standard;
   final String subject;
@@ -20,6 +21,7 @@ class ClassModel {
       {@required this.desc,
       @required this.meetURL,
       @required this.standard,
+      @required this.deviceToken,
       @required this.dateAndTime,
       @required this.uid,
       @required this.title,
@@ -34,6 +36,7 @@ class ClassModel {
         desc = json['desc'],
         dateAndTime = json['dateTime'],
         title = json['title'],
+        deviceToken = json['deviceToken'],
         meetURL = json['downloadURL'],
         standard = json['standard'],
         subjectIMG = json['subjectIMG'];
@@ -42,6 +45,7 @@ class ClassModel {
         'teacherName': teacherName,
         "downloadURL": meetURL,
         'uid': uid,
+        'deviceToken': deviceToken,
         "dateTime": dateAndTime,
         "title": title,
         "standard": standard,

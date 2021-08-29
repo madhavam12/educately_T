@@ -325,32 +325,51 @@ class _ClassCardState extends State<ClassCard> {
                           SizedBox(height: 10),
                           FlatButton.icon(
                             onPressed: () async {
-                              print(widget.snap.data());
                               Alert(
                                   context: context,
                                   title: "Students Joining",
+                                  style: AlertStyle(
+                                    titleStyle: TextStyle(
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black,
+                                        fontFamily: "QuickSand"),
+                                  ),
                                   content: Column(
                                     children: <Widget>[
-                                      Container(
-                                        height: 500,
-                                        child: ListView.builder(
-                                            itemCount: widget.snap
-                                                .data()['goingURL']
-                                                .length,
-                                            itemBuilder: (context, index) {
-                                              return Card(
-                                                child: ListTile(
-                                                  leading: Image.network(widget
-                                                          .snap
-                                                          .data()['goingURL']
-                                                      [index]),
-                                                  title: Text(widget.snap
-                                                          .data()['goingNames']
-                                                      [index]),
-                                                ),
-                                              );
-                                            }),
-                                      ),
+                                      widget.snap.data()['goingURL'] == null
+                                          ? Container(
+                                              child: Text(
+                                                "No student yet",
+                                                style: TextStyle(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black,
+                                                    fontFamily: "QuickSand"),
+                                              ),
+                                            )
+                                          : Container(
+                                              height: 200,
+                                              child: ListView.builder(
+                                                  itemCount: widget.snap
+                                                      .data()['goingURL']
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return Card(
+                                                      child: ListTile(
+                                                        leading: Image.network(
+                                                            widget.snap.data()[
+                                                                    'goingURL']
+                                                                [index]),
+                                                        title: Text(widget.snap
+                                                                    .data()[
+                                                                'goingNames']
+                                                            [index]),
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
                                     ],
                                   ),
                                   buttons: [
