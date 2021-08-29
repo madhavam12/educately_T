@@ -210,7 +210,7 @@ class _PostMeetingState extends State<PostMeeting> {
                       String token = await FireMessage().deviceToken;
                       await _firestoreService.uploadClass(
                         classModel: ClassModel(
-                          deviceToken: token,
+                          deviceToken: [token],
                           dateAndTime: dateTime,
                           uid: FirebaseAuth.instance.currentUser.uid,
                           standard: standard,

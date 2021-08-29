@@ -6,7 +6,7 @@ class ClassModel {
   final String teacherName;
 
   final String desc;
-  final String deviceToken;
+  final List deviceToken;
   final String title;
   final String standard;
   final String subject;
