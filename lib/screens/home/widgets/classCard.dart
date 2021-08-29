@@ -14,7 +14,7 @@ class ClassCard extends StatefulWidget {
   final String teacherName;
   final String id;
   final String meetURL;
-  final bool isGoing;
+
   final String dateTime;
   final String subject;
   final String subjectIMG;
@@ -27,7 +27,6 @@ class ClassCard extends StatefulWidget {
       @required this.snap,
       @required this.dateTime,
       @required this.colorData,
-      @required this.isGoing,
       @required this.isExpired,
       @required this.subjectIMG,
       @required this.desc,
@@ -209,65 +208,6 @@ class _ClassCardState extends State<ClassCard> {
                                     color: Colors.black,
                                     fontFamily: "QuickSand")),
                             textColor: Colors.white,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Row(
-                              children: [
-                                Text('I\'m going!',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontFamily: "QuickSand")),
-                                Switch(
-                                  value: widget.isGoing,
-                                  activeColor: colors[0] == kBlueColor
-                                      ? Colors.green
-                                      : Colors.blueAccent,
-                                  onChanged: (value) async {
-                                    print('s1fa');
-                                    if (value) {
-                                      print('sfa');
-                                      await FirebaseFirestore.instance
-                                          .collection("classes")
-                                          .doc(widget.id)
-                                          .set(
-                                        {
-                                          'going': FieldValue.arrayUnion([
-                                            FirebaseAuth
-                                                .instance.currentUser.uid
-                                          ]),
-                                        },
-                                        SetOptions(merge: true),
-                                      );
-
-                                      await FirebaseFirestore.instance
-                                          .collection("classesN")
-                                          .doc()
-                                          .set(
-                                        {
-                                          'deviceToken': [
-                                            widget.snap.data()['deviceToken']
-                                          ]
-                                        },
-                                      );
-                                    } else {
-                                      await FirebaseFirestore.instance
-                                          .collection("classes")
-                                          .doc(widget.id)
-                                          .set({
-                                        'going': FieldValue.arrayRemove([
-                                          FirebaseAuth.instance.currentUser.uid
-                                        ])
-                                      }, SetOptions(merge: true));
-                                    }
-
-                                    setState(() {});
-                                  },
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),

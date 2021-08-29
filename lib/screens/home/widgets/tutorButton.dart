@@ -49,13 +49,13 @@ class TutorNearbyCard extends StatelessWidget {
                 children: [
                   SizedBox(height: 50),
                   Text(
-                    "Find a tutor nearby",
+                    "Find other tutors nearby",
                     style: TextStyle(
                       letterSpacing: 1.5,
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontFamily: "QuickSand",
-                      fontSize: 25.0,
+                      fontSize: 22.0,
                     ),
                   ),
                   SizedBox(height: 10),

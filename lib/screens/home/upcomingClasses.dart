@@ -9,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'widgets/classCard.dart';
+
 class UpcomingClasses extends StatefulWidget {
   UpcomingClasses({Key key}) : super(key: key);
 
@@ -110,7 +112,7 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                           child: Container(
                             margin: EdgeInsets.all(10),
                             child: Text(
-                              "Sorry, no data available in your city.",
+                              "Sorry, no classes available.",
                               style: TextStyle(
                                   color: Colors.orange,
                                   fontSize: 15,
@@ -122,7 +124,7 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                       }
                     } else {
                       return Text(
-                        "Sorry, no data available for your city.",
+                        "Sorry, no classes available.",
                         style: TextStyle(
                             color: Colors.orange,
                             fontSize: 15,
@@ -133,279 +135,6 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                   }),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class ClassCard extends StatefulWidget {
-  final String title;
-  final String desc;
-  final bool isExpired;
-  final String teacherName;
-  final String id;
-  final String meetURL;
-  final DocumentSnapshot<Map> snap;
-
-  final String dateTime;
-  final String subject;
-  final String subjectIMG;
-  final Color colorData;
-
-  ClassCard(
-      {Key key,
-      @required this.title,
-      @required this.teacherName,
-      @required this.dateTime,
-      @required this.snap,
-      @required this.colorData,
-      @required this.isExpired,
-      @required this.subjectIMG,
-      @required this.desc,
-      @required this.id,
-      @required this.meetURL,
-      @required this.subject})
-      : super(key: key);
-
-  @override
-  _ClassCardState createState() => _ClassCardState();
-}
-
-class _ClassCardState extends State<ClassCard> {
-  bool _switchValue = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: Container(
-        height: 250,
-        margin: EdgeInsets.all(15),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.7),
-              blurRadius: 5.0,
-            ),
-          ],
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-          // image: DecorationImage(
-          //   image: AssetImage('assets/images/covid.png'),
-          // ),
-          color: widget.colorData,
-        ),
-        child: Container(
-          margin: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-          ),
-          child: Align(
-            alignment: Alignment.center,
-            child: Container(
-              child: Center(
-                child: Row(
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        height: 100,
-                        margin: EdgeInsets.only(
-                            bottom: 60, top: 1, right: 5, left: 5),
-                        width: 100,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(widget.subjectIMG),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Flexible(
-                                child: Text(
-                                  widget.title,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    letterSpacing: 1.5,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "QuickSand",
-                                    fontSize: 18.0,
-                                  ),
-                                ),
-                              ),
-                              widget.isExpired
-                                  ? Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Container(
-                                        padding: EdgeInsets.all(8),
-                                        margin: EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(5),
-                                            ),
-                                            color: Colors.red),
-                                        child: Text(
-                                          "Expired",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontFamily: "QuickSand"),
-                                        ),
-                                      ),
-                                    )
-                                  : Container()
-                            ],
-                          ),
-                          Text(
-                            widget.desc,
-                            maxLines: 4,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.white.withOpacity(0.9),
-                              fontWeight: FontWeight.bold,
-                              fontFamily: "QuickSand",
-                              fontSize: 11.0,
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Flexible(
-                            child: Row(
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    widget.dateTime,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "QuickSand"),
-                                  ),
-                                ),
-                                Container(
-                                  padding: EdgeInsets.all(8),
-                                  margin: EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(5),
-                                    ),
-                                    color: colors[0] == kBlueColor
-                                        ? Colors.orange
-                                        : Colors.blueAccent,
-                                  ),
-                                  child: Text(
-                                    widget.subject,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontFamily: "QuickSand"),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Text('By: ${widget.teacherName}',
-                              style: TextStyle(
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.white,
-                                  fontFamily: "QuickSand")),
-                          SizedBox(height: 10),
-                          FlatButton.icon(
-                            onPressed: () async {
-                              Alert(
-                                  context: context,
-                                  title: "Students Joining",
-                                  style: AlertStyle(
-                                    titleStyle: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.black,
-                                        fontFamily: "QuickSand"),
-                                  ),
-                                  content: Column(
-                                    children: <Widget>[
-                                      widget.snap.data()['goingURL'] == null
-                                          ? Container(
-                                              child: Text(
-                                                "No student yet",
-                                                style: TextStyle(
-                                                    fontSize: 18.0,
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Colors.black,
-                                                    fontFamily: "QuickSand"),
-                                              ),
-                                            )
-                                          : Container(
-                                              height: 200,
-                                              child: ListView.builder(
-                                                  itemCount: widget.snap
-                                                      .data()['goingURL']
-                                                      .length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return Card(
-                                                      child: ListTile(
-                                                        leading: Image.network(
-                                                            widget.snap.data()[
-                                                                    'goingURL']
-                                                                [index]),
-                                                        title: Text(widget.snap
-                                                                    .data()[
-                                                                'goingNames']
-                                                            [index]),
-                                                      ),
-                                                    );
-                                                  }),
-                                            ),
-                                    ],
-                                  ),
-                                  buttons: [
-                                    DialogButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: Text(
-                                        "Close",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 20),
-                                      ),
-                                    )
-                                  ]).show();
-                            },
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            icon: const Icon(
-                              LineAwesomeIcons.user,
-                              color: Colors.black,
-                            ),
-                            label: Text('Students joining',
-                                style: TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                    fontFamily: "QuickSand")),
-                            textColor: Colors.white,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
         ),
       ),
     );

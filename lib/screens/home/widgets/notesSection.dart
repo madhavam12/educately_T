@@ -52,7 +52,7 @@ class NotesSection extends StatelessWidget {
                             onTap: () async {
                               DocumentSnapshot<Map> user =
                                   await FirebaseFirestore.instance
-                                      .collection('students')
+                                      .collection('teachers')
                                       .doc(
                                           FirebaseAuth.instance.currentUser.uid)
                                       .get();
@@ -61,9 +61,9 @@ class NotesSection extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => NotesScreen(
-                                    standard: user.data()['standard'],
+                                    standard: user.data()['classesTaught'],
                                     subjectIMG:
-                                        snapshot.data.docs[index].data()['img'],
+                                        snapshot.data.docs[index].data()['photoURL'],
                                     subject: snapshot.data.docs[index]
                                         .data()['name'],
                                   ),

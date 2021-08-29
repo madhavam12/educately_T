@@ -162,7 +162,7 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                                     .data()["about"],
                                                 phoneNumber: snapshot
                                                     .data.docs[index]
-                                                    .data()["phoneNumber"],
+                                                    .data()["number"],
                                                 name: snapshot.data.docs[index]
                                                     .data()["name"],
                                                 standard: snapshot

@@ -45,6 +45,7 @@ class StudentDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(phoneNumber);
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -345,7 +346,7 @@ class StudentDetailsScreen extends StatelessWidget {
                                             .data()['desc'],
                                         dateTime: formatted + " at $formatted2",
                                         meetURL: snapshot.data.docs[index]
-                                            .data()['meetURL'],
+                                            .data()['downloadURL'],
                                         subject: snapshot.data.docs[index]
                                             .data()['subject'],
                                         colorData: colors[0],
