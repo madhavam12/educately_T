@@ -1,11 +1,10 @@
+import 'package:educately_t/screens/home/widgets/teacherSection.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-
-import '../widgets/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'studentDetailsScreen.dart';
 import 'package:hive/hive.dart';
-import 'teacherDetails.dart';
+
+import 'widgets/studentCard.dart';
 
 class ConnectWithStudents extends StatefulWidget {
   const ConnectWithStudents({Key key}) : super(key: key);
@@ -16,6 +15,7 @@ class ConnectWithStudents extends StatefulWidget {
 
 class _ConnectWithStudentsState extends State<ConnectWithStudents> {
   String city = "";
+
   getCityName() async {
     var box = Hive.box('city');
 
@@ -156,10 +156,6 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                             MaterialPageRoute(
                                               builder: (context) =>
                                                   StudentDetailsScreen(
-                                                // uid: snapshot
-                                                //     .data.docs[index]
-                                                //     .data()["uid"],
-
                                                 uid: snapshot
                                                     .data.docs[index].id,
                                                 about: snapshot.data.docs[index]
@@ -195,7 +191,7 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                                 child: Container(
                                   margin: EdgeInsets.all(10),
                                   child: Text(
-                                    "Sorry, no data available in your city.",
+                                    "Sorry, no students available in your city.",
                                     style: TextStyle(
                                         color: Colors.orange,
                                         fontSize: 15,
@@ -207,7 +203,7 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                             }
                           } else {
                             return Text(
-                              "Sorry, no data available for your city.",
+                              "Sorry, no students available in your city.",
                               style: TextStyle(
                                   color: Colors.orange,
                                   fontSize: 15,
@@ -220,262 +216,8 @@ class _ConnectWithStudentsState extends State<ConnectWithStudents> {
                 ],
               ),
             ),
-            Container(
-              margin: EdgeInsets.all(25),
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      margin: EdgeInsets.all(
-                        10.0,
-                      ),
-                      child: Text(
-                        "Teachers in $city: ",
-                        style: TextStyle(
-                          letterSpacing: 1.5,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: "QuickSand",
-                          fontSize: 20.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 220,
-                    // margin: EdgeInsets.all(15),
-                    child: StreamBuilder<QuerySnapshot<Map>>(
-                        stream: FirebaseFirestore.instance
-                            .collection("teachers")
-                            .where('cityName', isEqualTo: city)
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text("${snapshot.error}");
-                          }
-
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          }
-                          if (snapshot.hasData) {
-                            if (snapshot.data.docs.isNotEmpty) {
-                              return ListView.builder(
-                                  itemCount: snapshot.data.docs.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                TeacherDetailsScreen(
-                                              // uid: snapshot
-                                              //     .data.docs[index]
-                                              //     .data()["uid"],
-
-                                              uid: snapshot.data.docs[index].id,
-                                              phoneNumber: snapshot
-                                                  .data.docs[index]
-                                                  .data()["phoneNumber"],
-                                              name: snapshot.data.docs[index]
-                                                  .data()["name"],
-                                              subject: snapshot.data.docs[index]
-                                                  .data()["subjectsTaught"],
-                                              imageUrl: snapshot
-                                                  .data.docs[index]
-                                                  .data()["photoURL"],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: TeacherCard(
-                                        subject: snapshot.data.docs[index]
-                                            .data()["subjectsTaught"],
-                                        imgPath: snapshot.data.docs[index]
-                                            .data()["photoURL"],
-                                        name: snapshot.data.docs[index]
-                                            .data()["name"],
-                                      ),
-                                    );
-                                  });
-                            } else {
-                              return Center(
-                                child: Container(
-                                  margin: EdgeInsets.all(10),
-                                  child: Text(
-                                    "Sorry, no data available in your city.",
-                                    style: TextStyle(
-                                        color: Colors.orange,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "QuickSand"),
-                                  ),
-                                ),
-                              );
-                            }
-                          } else {
-                            return Text(
-                              "Sorry, no data available for your city.",
-                              style: TextStyle(
-                                  color: Colors.orange,
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "QuickSand"),
-                            );
-                          }
-                        }),
-                  )
-                ],
-              ),
-            ),
+            TeacherSection(city: city),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class StudentCard extends StatelessWidget {
-  final String name;
-  final String imgPath;
-  final String standard;
-  StudentCard(
-      {Key key,
-      @required this.standard,
-      @required this.name,
-      @required this.imgPath})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Container(
-          width: 175,
-          padding: EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  imgPath,
-                ),
-                radius: 50,
-              ),
-              SizedBox(height: 10),
-              Flexible(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    children: [
-                      Text(
-                        name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        standard,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          letterSpacing: 1.5,
-                          color: Colors.black.withOpacity(0.7),
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "QuickSand",
-                          fontSize: 13.5,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class TeacherCard extends StatelessWidget {
-  final String name;
-  final String imgPath;
-  final String subject;
-  TeacherCard(
-      {Key key,
-      @required this.subject,
-      @required this.name,
-      @required this.imgPath})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Container(
-          width: 175,
-          height: 185,
-          padding: EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
-          child: Column(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(
-                  imgPath,
-                ),
-                radius: 50,
-              ),
-              SizedBox(height: 10),
-              Flexible(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    children: [
-                      Text(
-                        name,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                        ),
-                      ),
-                      Text(
-                        subject,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          letterSpacing: 1.5,
-                          color: Colors.black.withOpacity(0.7),
-                          fontWeight: FontWeight.w500,
-                          fontFamily: "QuickSand",
-                          fontSize: 13.5,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );
