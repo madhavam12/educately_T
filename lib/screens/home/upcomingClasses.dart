@@ -147,7 +147,7 @@ class ClassCard extends StatefulWidget {
   final String id;
   final String meetURL;
   final DocumentSnapshot<Map> snap;
-  final bool isGoing;
+
   final String dateTime;
   final String subject;
   final String subjectIMG;
@@ -160,7 +160,6 @@ class ClassCard extends StatefulWidget {
       @required this.dateTime,
       @required this.snap,
       @required this.colorData,
-      @required this.isGoing,
       @required this.isExpired,
       @required this.subjectIMG,
       @required this.desc,

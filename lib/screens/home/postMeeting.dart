@@ -7,7 +7,7 @@ import 'package:connection_verify/connection_verify.dart';
 import 'package:educately_t/models/classModel.dart';
 import 'package:educately_t/services/firestoreDatabaseService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:educately_t/services/firebaseMessagingService.dart';
 import 'package:date_field/date_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -207,8 +207,10 @@ class _PostMeetingState extends State<PostMeeting> {
                           .collection('subjects')
                           .doc(subjects)
                           .get();
+                      String token = await FireMessage().deviceToken;
                       await _firestoreService.uploadClass(
                         classModel: ClassModel(
+                          deviceToken: token,
                           dateAndTime: dateTime,
                           uid: FirebaseAuth.instance.currentUser.uid,
                           standard: standard,

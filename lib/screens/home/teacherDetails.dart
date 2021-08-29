@@ -378,7 +378,7 @@ class ClassCard extends StatefulWidget {
   final String subjectIMG;
   final Color colorData;
   final String id;
-  final bool isGoing;
+
   ClassCard(
       {Key key,
       @required this.title,
@@ -388,7 +388,6 @@ class ClassCard extends StatefulWidget {
       @required this.colorData,
       @required this.isExpired,
       @required this.subjectIMG,
-      @required this.isGoing,
       @required this.desc,
       @required this.meetURL,
       @required this.subject})
