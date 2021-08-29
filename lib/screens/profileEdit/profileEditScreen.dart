@@ -1,31 +1,31 @@
-import 'package:educately/services/firestoreDatabaseService.dart';
+import 'package:educately_t/services/firestoreDatabaseService.dart';
 import 'package:flutter/material.dart';
 
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:hive/hive.dart';
 
 import 'package:hive/hive.dart';
-import 'package:educately/services/firebaseStorageService.dart';
-import 'package:educately/models/user.dart';
+import 'package:educately_t/services/firebaseStorageService.dart';
+import 'package:educately_t/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:educately/services/geolocationService.dart';
+import 'package:educately_t/services/geolocationService.dart';
 // import 'package:dropdown_search/dropdown_search.dart';
-import 'package:educately/models/user.dart';
+import 'package:educately_t/models/user.dart';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:educately/screens/home/homeScreen.dart';
+import 'package:educately_t/screens/home/homeScreen.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
 
 import 'package:connection_verify/connection_verify.dart';
-import 'package:educately/services/FirebaseAuthService.dart';
+import 'package:educately_t/services/FirebaseAuthService.dart';
 
-import 'package:educately/services/firestoreDatabaseService.dart';
+import 'package:educately_t/services/firestoreDatabaseService.dart';
 
 class ProfileCreationView extends StatefulWidget {
   @override
@@ -212,6 +212,10 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                   height: 20,
                 ),
                 Standard(),
+                SizedBox(
+                  height: 20,
+                ),
+                SubjectsTaught(),
                 GestureDetector(
                   onTap: () async {
                     if (_nameController.text == "" ||
@@ -263,7 +267,7 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                             color: Colors.red);
                         return 0;
                       }
-                      UserModel user = UserModel(
+                      TeacherModel user = TeacherModel(
                         about: _aboutController.text,
                         email: FirebaseAuth.instance.currentUser.email,
                         number: _phoneController.text,
@@ -271,7 +275,8 @@ class _ProfileCreationViewState extends State<ProfileCreationView> {
                         photoURL: imgUpload != null
                             ? imgUpload[0]
                             : FirebaseAuth.instance.currentUser.photoURL,
-                        standard: standard,
+                        subjectsTaught: subjects,
+                        classesTaught: standard,
                         cityName: cityName[1],
                         name: _nameController.text,
                       );
@@ -440,16 +445,21 @@ class _StandardState extends State<Standard> {
       ),
       items: [
         "8th",
+        "8th-9th",
         "9th",
+        "9th & 10th",
         "10th",
         "11th",
+        "11th & 12th",
         "12th",
+        "10th-12th",
+        "9th,10th,11th,12th",
       ],
-      label: "Standard",
+      label: "Classes Taught",
       onChanged: (sp) {
         standard = sp;
       },
-      hint: "Your Class",
+      hint: "Classes",
       selectedItem: "10th",
       validator: (String item) {},
       mode: Mode.BOTTOM_SHEET,
@@ -458,6 +468,9 @@ class _StandardState extends State<Standard> {
 }
 
 String standard = "10th";
+
+String subjects = "English";
+
 openLoadingDialog(BuildContext context, String text) async {
   showDialog(
       context: context,
@@ -472,6 +485,52 @@ openLoadingDialog(BuildContext context, String text) async {
               ),
             ]),
           ));
+}
+
+class SubjectsTaught extends StatefulWidget {
+  SubjectsTaught({Key key}) : super(key: key);
+
+  @override
+  _SubjectsTaughtState createState() => _SubjectsTaughtState();
+}
+
+class _SubjectsTaughtState extends State<SubjectsTaught> {
+  @override
+  Widget build(BuildContext context) {
+    return DropdownSearch(
+      dropdownSearchDecoration: InputDecoration(
+        filled: true,
+        // contentPadding: EdgeInsets.all(7.0),
+        fillColor: Colors.white,
+        // border: OutlineInputBorder(
+        //   borderSide:
+        //       BorderSide(color: Colors.black, width: 5.0),
+        // ),
+
+        contentPadding: EdgeInsets.fromLTRB(12, 12, 0, 0),
+        border: OutlineInputBorder(),
+        labelStyle: TextStyle(color: Colors.black),
+      ),
+      items: [
+        "English",
+        "Physics",
+        "Chemistry",
+        "History",
+        "Geography",
+        "Biology",
+        "Maths",
+        "Computers",
+      ],
+      label: "Subjects Taught",
+      onChanged: (sp) {
+        subjects = sp;
+      },
+      hint: "Subjects",
+      selectedItem: "English",
+      validator: (String item) {},
+      mode: Mode.BOTTOM_SHEET,
+    );
+  }
 }
 
 void saveStateToHive(String state) {

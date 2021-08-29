@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:educately/models/notes.dart';
+import 'package:educately_t/models/notes.dart';
 import 'dart:async';
-import 'package:educately/models/user.dart';
+import 'package:educately_t/models/user.dart';
+import 'package:educately_t/models/classModel.dart';
 
 class Firestore {
   final _firestore = FirebaseFirestore.instance;
@@ -11,9 +12,13 @@ class Firestore {
     await _firestore.collection('notes').doc().set(notes.toJson());
   }
 
-  Future createStudentProfile({@required UserModel student}) async {
+  Future<void> uploadClass({@required ClassModel classModel}) async {
+    await _firestore.collection('classes').doc().set(classModel.toJson());
+  }
+
+  Future createStudentProfile({@required TeacherModel student}) async {
     await _firestore
-        .collection('students')
+        .collection('teachers')
         .doc(student.uid)
         .set(student.toJson())
         .catchError((e) => e);
@@ -21,7 +26,7 @@ class Firestore {
 
   Future<bool> hasFilledData({@required String uid}) async {
     DocumentSnapshot<Map> doc =
-        await _firestore.collection('students').doc(uid).get();
+        await _firestore.collection('teachers').doc(uid).get();
 
     if (!doc.exists) {
       return false;

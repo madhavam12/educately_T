@@ -32,7 +32,7 @@ class _UserProfileViewState extends State<UserProfileView> {
 
   initializeDoc() async {
     doc = await FirebaseFirestore.instance
-        .collection("students")
+        .collection("teachers")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .get();
     setState(() {});
@@ -120,7 +120,7 @@ class _UserProfileViewState extends State<UserProfileView> {
                                   ),
                                   SizedBox(height: 5),
                                   Text(
-                                    doc.data()['standard'],
+                                    doc.data()['subjectsTaught'],
                                     maxLines: 5,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(

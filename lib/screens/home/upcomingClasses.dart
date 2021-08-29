@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import '../widgets/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class UpcomingClasses extends StatefulWidget {
   UpcomingClasses({Key key}) : super(key: key);
@@ -39,7 +41,7 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                   20.0,
                 ),
                 child: Text(
-                  "Upcoming Classes",
+                  "Your Classes",
                   style: TextStyle(
                     letterSpacing: 1.5,
                     color: Colors.black,
@@ -81,13 +83,11 @@ class _UpcomingClassesState extends State<UpcomingClasses> {
                                   new DateFormat.jm('en_US');
                               bool isExpired = db.isBefore(DateTime.now());
                               String formatted = formatter1.format(db);
-                              List goingList =
-                                  snapshot.data.docs[index].data()['going'];
+
                               String formatted2 = formatter2.format(db);
                               colors.shuffle();
                               return ClassCard(
-                                isGoing: goingList.contains(
-                                    FirebaseAuth.instance.currentUser.uid),
+                                snap: snapshot.data.docs[index],
                                 id: snapshot.data.docs[index].id,
                                 isExpired: isExpired,
                                 teacherName: snapshot.data.docs[index]
@@ -146,6 +146,7 @@ class ClassCard extends StatefulWidget {
   final String teacherName;
   final String id;
   final String meetURL;
+  final DocumentSnapshot<Map> snap;
   final bool isGoing;
   final String dateTime;
   final String subject;
@@ -157,6 +158,7 @@ class ClassCard extends StatefulWidget {
       @required this.title,
       @required this.teacherName,
       @required this.dateTime,
+      @required this.snap,
       @required this.colorData,
       @required this.isGoing,
       @required this.isExpired,
@@ -323,75 +325,60 @@ class _ClassCardState extends State<ClassCard> {
                           SizedBox(height: 10),
                           FlatButton.icon(
                             onPressed: () async {
-                              Clipboard.setData(
-                                  ClipboardData(text: widget.meetURL));
-                              showToast(msg: "Copied to clipboard!");
+                              print(widget.snap.data());
+                              Alert(
+                                  context: context,
+                                  title: "Students Joining",
+                                  content: Column(
+                                    children: <Widget>[
+                                      Container(
+                                        height: 500,
+                                        child: ListView.builder(
+                                            itemCount: widget.snap
+                                                .data()['goingURL']
+                                                .length,
+                                            itemBuilder: (context, index) {
+                                              return Card(
+                                                child: ListTile(
+                                                  leading: Image.network(widget
+                                                          .snap
+                                                          .data()['goingURL']
+                                                      [index]),
+                                                  title: Text(widget.snap
+                                                          .data()['goingNames']
+                                                      [index]),
+                                                ),
+                                              );
+                                            }),
+                                      ),
+                                    ],
+                                  ),
+                                  buttons: [
+                                    DialogButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text(
+                                        "Close",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 20),
+                                      ),
+                                    )
+                                  ]).show();
                             },
                             color: Colors.white,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             icon: const Icon(
-                              Icons.copy,
+                              LineAwesomeIcons.user,
                               color: Colors.black,
                             ),
-                            label: Text('Copy meet link!',
+                            label: Text('Students joining',
                                 style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
                                     color: Colors.black,
                                     fontFamily: "QuickSand")),
                             textColor: Colors.white,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Row(
-                              children: [
-                                Text('I\'m going!',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontFamily: "QuickSand")),
-                                Switch(
-                                  value: widget.isGoing,
-                                  activeColor: colors[0] == kBlueColor
-                                      ? Colors.green
-                                      : Colors.blueAccent,
-                                  onChanged: (value) async {
-                                    print('s1fa');
-                                    if (value) {
-                                      print('sfa');
-                                      await FirebaseFirestore.instance
-                                          .collection("classes")
-                                          .doc(widget.id)
-                                          .set(
-                                        {
-                                          'going': FieldValue.arrayUnion([
-                                            FirebaseAuth
-                                                .instance.currentUser.uid
-                                          ]),
-                                        },
-                                        SetOptions(merge: true),
-                                      );
-                                    } else {
-                                      await FirebaseFirestore.instance
-                                          .collection("classes")
-                                          .doc(widget.id)
-                                          .set({
-                                        'going': FieldValue.arrayRemove([
-                                          FirebaseAuth.instance.currentUser.uid
-                                        ])
-                                      }, SetOptions(merge: true));
-                                    }
-
-                                    setState(() {
-                                      _switchValue = value;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
                           ),
                         ],
                       ),

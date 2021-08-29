@@ -1,39 +1,42 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class UserModel {
+class TeacherModel {
   final String name;
 
   final String uid;
 
-  final String standard;
+  final String classesTaught;
   final String photoURL;
   final String about;
   final String email;
   final String number;
   final String cityName;
 
+  final String subjectsTaught;
   Timestamp dateAndTime;
 
-  UserModel({
+  TeacherModel({
     @required this.name,
-    @required this.standard,
+    @required this.classesTaught,
     @required this.photoURL,
     @required this.about,
     @required this.uid,
     @required this.email,
     @required this.number,
+    @required this.subjectsTaught,
     @required this.cityName,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json)
+  TeacherModel.fromJson(Map<String, dynamic> json)
       : name = json['name'],
         cityName = json['cityName'],
         email = json['email'],
         about = json['about'],
+        subjectsTaught = json['subjectsTaught'],
         photoURL = json['photoURL'],
         number = json['number'],
-        standard = json['standard'],
+        classesTaught = json['classesTaught'],
         uid = json['uid'],
         dateAndTime = json['dateAndTime'];
 
@@ -42,8 +45,9 @@ class UserModel {
         'uid': uid,
         'number': number,
         'photoURL': photoURL,
+        'subjectsTaught': subjectsTaught,
         'about': about,
-        'standard': standard,
+        'classesTaught': classesTaught,
         'name': name,
         'dateAndTime': Timestamp.now(),
         'email': email,

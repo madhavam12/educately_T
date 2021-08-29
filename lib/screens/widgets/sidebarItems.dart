@@ -4,9 +4,9 @@ import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:educately/services/firebaseAuthService.dart';
+import 'package:educately_t/services/firebaseAuthService.dart';
 
-import 'package:educately/screens/login/loginScreen.dart';
+import 'package:educately_t/screens/login/loginScreen.dart';
 
 String email = 'madhavam.shahi.12@gmail.com';
 

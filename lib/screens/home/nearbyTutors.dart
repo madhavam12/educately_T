@@ -77,24 +77,24 @@ class _NearbyTutorsState extends State<NearbyTutors> {
                                       //     .data.docs[index]
                                       //     .data()["uid"],
 
-                                      uid: "uid",
+                                      uid: snapshot.data.docs[index].id,
                                       phoneNumber: snapshot.data.docs[index]
                                           .data()["phoneNumber"],
                                       name: snapshot.data.docs[index]
                                           .data()["name"],
                                       subject: snapshot.data.docs[index]
-                                          .data()["subject"],
+                                          .data()["classesTaught"],
                                       imageUrl: snapshot.data.docs[index]
-                                          .data()["img"],
+                                          .data()["photoURL"],
                                     ),
                                   ),
                                 );
                               },
                               child: TeacherCard(
-                                subject:
-                                    snapshot.data.docs[index].data()["subject"],
-                                imgPath:
-                                    snapshot.data.docs[index].data()["img"],
+                                subject: snapshot.data.docs[index]
+                                    .data()["classesTaught"],
+                                imgPath: snapshot.data.docs[index]
+                                    .data()["photoURL"],
                                 name: snapshot.data.docs[index].data()["name"],
                               ),
                             );
@@ -105,7 +105,7 @@ class _NearbyTutorsState extends State<NearbyTutors> {
                           child: Container(
                             margin: EdgeInsets.all(10),
                             child: Text(
-                              "Sorry, no data available in your city.",
+                              "No classes available",
                               style: TextStyle(
                                   color: Colors.orange,
                                   fontSize: 15,
@@ -117,7 +117,7 @@ class _NearbyTutorsState extends State<NearbyTutors> {
                       }
                     } else {
                       return Text(
-                        "Sorry, no data available for your city.",
+                        "No classes available",
                         style: TextStyle(
                             color: Colors.orange,
                             fontSize: 15,

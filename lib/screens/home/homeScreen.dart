@@ -2,14 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:async';
-
+import 'notesScreen.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'upcomingClasses.dart';
-
+import 'nearbyTutors.dart';
+import 'teacherDetails.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:educately_t/services/randomFactService.dart';
-
+import 'postMeeting.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -24,7 +25,9 @@ import 'package:liquid_ui/liquid_ui.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
 // QrService _qrService = locator<QrService>();
 
-import 'nearbyTutors.dart';
+import 'userProfile.dart';
+
+import 'connectStudents.dart';
 
 final GlobalKey<SideMenuState> _endSideMenuKey = GlobalKey<SideMenuState>();
 
@@ -207,29 +210,29 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       await FirebaseFirestore
                                                           .instance
                                                           .collection(
-                                                              'students')
+                                                              'teachers')
                                                           .doc(FirebaseAuth
                                                               .instance
                                                               .currentUser
                                                               .uid)
                                                           .get();
                                                   print(user.data());
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) =>
-                                                  //         NotesScreen(
-                                                  //       standard: user
-                                                  //           .data()['standard'],
-                                                  //       subjectIMG: snapshot
-                                                  //           .data.docs[index]
-                                                  //           .data()['img'],
-                                                  //       subject: snapshot
-                                                  //           .data.docs[index]
-                                                  //           .data()['name'],
-                                                  //     ),
-                                                  //   ),
-                                                  // );
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          NotesScreen(
+                                                        standard: user.data()[
+                                                            'classesTaught'],
+                                                        subjectIMG: snapshot
+                                                            .data.docs[index]
+                                                            .data()['img'],
+                                                        subject: snapshot
+                                                            .data.docs[index]
+                                                            .data()['name'],
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
                                                 child: SubjectsCard(
                                                   imgPath: snapshot
@@ -297,13 +300,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     children: [
                                       SizedBox(height: 50),
                                       Text(
-                                        "Find a tutor nearby",
+                                        "Find other tutors nearby",
                                         style: TextStyle(
                                           letterSpacing: 1.5,
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: "QuickSand",
-                                          fontSize: 25.0,
+                                          fontSize: 23.0,
                                         ),
                                       ),
                                       SizedBox(height: 10),
@@ -389,41 +392,43 @@ class _HomeScreenState extends State<HomeScreen> {
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
                                                 onTap: () {
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //     builder: (context) =>
-                                                  //         TeacherDetailsScreen(
-                                                  //       // uid: snapshot
-                                                  //       //     .data.docs[index]
-                                                  //       //     .data()["uid"],
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          TeacherDetailsScreen(
+                                                        // uid: snapshot
+                                                        //     .data.docs[index]
+                                                        //     .data()["uid"],
 
-                                                  //       uid: "uid",
-                                                  //       phoneNumber: snapshot
-                                                  //               .data
-                                                  //               .docs[index]
-                                                  //               .data()[
-                                                  //           "phoneNumber"],
-                                                  //       name: snapshot
-                                                  //           .data.docs[index]
-                                                  //           .data()["name"],
-                                                  //       subject: snapshot
-                                                  //           .data.docs[index]
-                                                  //           .data()["subject"],
-                                                  //       imageUrl: snapshot
-                                                  //           .data.docs[index]
-                                                  //           .data()["img"],
-                                                  //     ),
-                                                  //   ),
-                                                  // );
+                                                        uid: snapshot.data
+                                                            .docs[index].id,
+                                                        phoneNumber: snapshot
+                                                                .data
+                                                                .docs[index]
+                                                                .data()[
+                                                            "phoneNumber"],
+                                                        name: snapshot
+                                                            .data.docs[index]
+                                                            .data()["name"],
+                                                        subject: snapshot.data
+                                                                .docs[index]
+                                                                .data()[
+                                                            "subjectsTaught"],
+                                                        imageUrl: snapshot
+                                                            .data.docs[index]
+                                                            .data()["photoURL"],
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
                                                 child: TeacherCard(
                                                   subject: snapshot
                                                       .data.docs[index]
-                                                      .data()["subject"],
+                                                      .data()["subjectsTaught"],
                                                   imgPath: snapshot
                                                       .data.docs[index]
-                                                      .data()["img"],
+                                                      .data()["photoURL"],
                                                   name: snapshot
                                                       .data.docs[index]
                                                       .data()["name"],
@@ -505,7 +510,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             decoration: BoxDecoration(
                                               image: DecorationImage(
                                                 image: AssetImage(
-                                                    "assets/images/brain.png"),
+                                                    "assets/images/detail_illustration.png"),
                                               ),
                                             ),
                                           ),
@@ -518,7 +523,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               Text(
-                                                "Bored?",
+                                                "Want to teach\nonline?",
                                                 style: TextStyle(
                                                   letterSpacing: 1.5,
                                                   color: Colors.white,
@@ -528,7 +533,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 ),
                                               ),
                                               Text(
-                                                "Tap below to get a random number\nfacts",
+                                                "Tap below to post your online class.",
                                                 maxLines: 4,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -542,33 +547,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                               SizedBox(height: 10),
                                               FlatButton.icon(
                                                 onPressed: () async {
-                                                  RandomFact fact =
-                                                      RandomFact();
-
-                                                  String hh =
-                                                      await fact.fetchFact();
-
-                                                  Alert(
-                                                    context: context,
-                                                    type: AlertType.info,
-                                                    title: "Random Fact",
-                                                    desc: hh,
-                                                    buttons: [
-                                                      DialogButton(
-                                                        child: Text(
-                                                          "Close",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20),
-                                                        ),
-                                                        onPressed: () =>
-                                                            Navigator.pop(
-                                                                context),
-                                                        width: 120,
-                                                      )
-                                                    ],
-                                                  ).show();
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          PostMeeting(),
+                                                    ),
+                                                  );
                                                 },
                                                 color: Colors.white,
                                                 shape: RoundedRectangleBorder(
@@ -580,7 +565,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   Icons.search,
                                                   color: Colors.black,
                                                 ),
-                                                label: Text('Find Now!',
+                                                label: Text('Post Now!',
                                                     style: TextStyle(
                                                         fontSize: 16.0,
                                                         fontWeight:

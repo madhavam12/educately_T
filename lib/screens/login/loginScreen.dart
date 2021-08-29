@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:educately/services/firebaseAuthService.dart';
+import 'package:educately_t/services/firebaseAuthService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:connection_verify/connection_verify.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../home/homeScreen.dart';
-import 'package:educately/screens/profileEdit/profileEditScreen.dart';
+import 'package:educately_t/screens/profileEdit/profileEditScreen.dart';
 import 'package:flutter/services.dart';
 import '../widgets/widgets.dart';
-import 'package:educately/services/firestoreDatabaseService.dart';
+import 'package:educately_t/services/firestoreDatabaseService.dart';
 import 'package:hive/hive.dart';
 
 class LoginScreen extends StatefulWidget {
